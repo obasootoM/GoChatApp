@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package pb;
+import "google/protobuf/timestamp.proto";
+option go_package = "github.com/obasootom/gochatapp/pb";
+
+message Message {
+    string id = 1;
+    string content = 2;
+    google.protobuf.Timestamp created_at = 3;
+}

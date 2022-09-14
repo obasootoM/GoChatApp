@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package pb;
+import "connect.proto";
+import "message.proto";
+import "close.proto";
+option go_package = "github.com/obasootom/gochatapp/pb";
+service ChapApp {
+    rpc CreatStream(Connect) returns (stream Message) {}
+    rpc BroadCastStream(Message) returns (Close){}
+}

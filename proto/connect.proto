@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package pb;
+import "user.proto";
+option go_package = "github.com/obasootom/gochatapp/pb";
+message Connect {
+    User user = 1;
+    bool active =2;
+}
+
