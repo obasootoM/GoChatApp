@@ -18,28 +18,28 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// ChapAppClient is the client API for ChapApp service.
+// BroadcastClient is the client API for Broadcast service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type ChapAppClient interface {
-	CreatStream(ctx context.Context, in *Connect, opts ...grpc.CallOption) (ChapApp_CreatStreamClient, error)
-	BroadCastStream(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Close, error)
+type BroadcastClient interface {
+	CreateStream(ctx context.Context, in *Connect, opts ...grpc.CallOption) (Broadcast_CreateStreamClient, error)
+	BroadcastMessage(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Close, error)
 }
 
-type chapAppClient struct {
+type broadcastClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewChapAppClient(cc grpc.ClientConnInterface) ChapAppClient {
-	return &chapAppClient{cc}
+func NewBroadcastClient(cc grpc.ClientConnInterface) BroadcastClient {
+	return &broadcastClient{cc}
 }
 
-func (c *chapAppClient) CreatStream(ctx context.Context, in *Connect, opts ...grpc.CallOption) (ChapApp_CreatStreamClient, error) {
-	stream, err := c.cc.NewStream(ctx, &ChapApp_ServiceDesc.Streams[0], "/pb.ChapApp/CreatStream", opts...)
+func (c *broadcastClient) CreateStream(ctx context.Context, in *Connect, opts ...grpc.CallOption) (Broadcast_CreateStreamClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Broadcast_ServiceDesc.Streams[0], "/pb.Broadcast/CreateStream", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &chapAppCreatStreamClient{stream}
+	x := &broadcastCreateStreamClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -49,16 +49,16 @@ func (c *chapAppClient) CreatStream(ctx context.Context, in *Connect, opts ...gr
 	return x, nil
 }
 
-type ChapApp_CreatStreamClient interface {
+type Broadcast_CreateStreamClient interface {
 	Recv() (*Message, error)
 	grpc.ClientStream
 }
 
-type chapAppCreatStreamClient struct {
+type broadcastCreateStreamClient struct {
 	grpc.ClientStream
 }
 
-func (x *chapAppCreatStreamClient) Recv() (*Message, error) {
+func (x *broadcastCreateStreamClient) Recv() (*Message, error) {
 	m := new(Message)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -66,102 +66,102 @@ func (x *chapAppCreatStreamClient) Recv() (*Message, error) {
 	return m, nil
 }
 
-func (c *chapAppClient) BroadCastStream(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Close, error) {
+func (c *broadcastClient) BroadcastMessage(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Close, error) {
 	out := new(Close)
-	err := c.cc.Invoke(ctx, "/pb.ChapApp/BroadCastStream", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pb.Broadcast/BroadcastMessage", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// ChapAppServer is the server API for ChapApp service.
-// All implementations must embed UnimplementedChapAppServer
+// BroadcastServer is the server API for Broadcast service.
+// All implementations must embed UnimplementedBroadcastServer
 // for forward compatibility
-type ChapAppServer interface {
-	CreatStream(*Connect, ChapApp_CreatStreamServer) error
-	BroadCastStream(context.Context, *Message) (*Close, error)
-	mustEmbedUnimplementedChapAppServer()
+type BroadcastServer interface {
+	CreateStream(*Connect, Broadcast_CreateStreamServer) error
+	BroadcastMessage(context.Context, *Message) (*Close, error)
+	mustEmbedUnimplementedBroadcastServer()
 }
 
-// UnimplementedChapAppServer must be embedded to have forward compatible implementations.
-type UnimplementedChapAppServer struct {
+// UnimplementedBroadcastServer must be embedded to have forward compatible implementations.
+type UnimplementedBroadcastServer struct {
 }
 
-func (UnimplementedChapAppServer) CreatStream(*Connect, ChapApp_CreatStreamServer) error {
-	return status.Errorf(codes.Unimplemented, "method CreatStream not implemented")
+func (UnimplementedBroadcastServer) CreateStream(*Connect, Broadcast_CreateStreamServer) error {
+	return status.Errorf(codes.Unimplemented, "method CreateStream not implemented")
 }
-func (UnimplementedChapAppServer) BroadCastStream(context.Context, *Message) (*Close, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method BroadCastStream not implemented")
+func (UnimplementedBroadcastServer) BroadcastMessage(context.Context, *Message) (*Close, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BroadcastMessage not implemented")
 }
-func (UnimplementedChapAppServer) mustEmbedUnimplementedChapAppServer() {}
+func (UnimplementedBroadcastServer) mustEmbedUnimplementedBroadcastServer() {}
 
-// UnsafeChapAppServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to ChapAppServer will
+// UnsafeBroadcastServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to BroadcastServer will
 // result in compilation errors.
-type UnsafeChapAppServer interface {
-	mustEmbedUnimplementedChapAppServer()
+type UnsafeBroadcastServer interface {
+	mustEmbedUnimplementedBroadcastServer()
 }
 
-func RegisterChapAppServer(s grpc.ServiceRegistrar, srv ChapAppServer) {
-	s.RegisterService(&ChapApp_ServiceDesc, srv)
+func RegisterBroadcastServer(s grpc.ServiceRegistrar, srv BroadcastServer) {
+	s.RegisterService(&Broadcast_ServiceDesc, srv)
 }
 
-func _ChapApp_CreatStream_Handler(srv interface{}, stream grpc.ServerStream) error {
+func _Broadcast_CreateStream_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(Connect)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(ChapAppServer).CreatStream(m, &chapAppCreatStreamServer{stream})
+	return srv.(BroadcastServer).CreateStream(m, &broadcastCreateStreamServer{stream})
 }
 
-type ChapApp_CreatStreamServer interface {
+type Broadcast_CreateStreamServer interface {
 	Send(*Message) error
 	grpc.ServerStream
 }
 
-type chapAppCreatStreamServer struct {
+type broadcastCreateStreamServer struct {
 	grpc.ServerStream
 }
 
-func (x *chapAppCreatStreamServer) Send(m *Message) error {
+func (x *broadcastCreateStreamServer) Send(m *Message) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func _ChapApp_BroadCastStream_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Broadcast_BroadcastMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Message)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ChapAppServer).BroadCastStream(ctx, in)
+		return srv.(BroadcastServer).BroadcastMessage(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.ChapApp/BroadCastStream",
+		FullMethod: "/pb.Broadcast/BroadcastMessage",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ChapAppServer).BroadCastStream(ctx, req.(*Message))
+		return srv.(BroadcastServer).BroadcastMessage(ctx, req.(*Message))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// ChapApp_ServiceDesc is the grpc.ServiceDesc for ChapApp service.
+// Broadcast_ServiceDesc is the grpc.ServiceDesc for Broadcast service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var ChapApp_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "pb.ChapApp",
-	HandlerType: (*ChapAppServer)(nil),
+var Broadcast_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "pb.Broadcast",
+	HandlerType: (*BroadcastServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "BroadCastStream",
-			Handler:    _ChapApp_BroadCastStream_Handler,
+			MethodName: "BroadcastMessage",
+			Handler:    _Broadcast_BroadcastMessage_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "CreatStream",
-			Handler:       _ChapApp_CreatStream_Handler,
+			StreamName:    "CreateStream",
+			Handler:       _Broadcast_CreateStream_Handler,
 			ServerStreams: true,
 		},
 	},
