@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gochatapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      gochatapp/app: gochatapp
+  template:
+    metadata:
+      labels:
+        gochatapp/app: gochatapp
+        gochatapp/tier: api
+    spec:
+      containers:
+      - name: api
+        image: gochatapp
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8888
+          name: api
+
+          
+
+          

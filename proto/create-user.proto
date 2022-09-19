@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package ="github.com/obasootom/gochatapp/pb";
+message UserChat {
+    string username = 1;
+    string fullName = 2;
+    string email = 3;
+    string password_changed_at = 4;
+    string created_at = 5;
+}

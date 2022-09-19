@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package pb;
+import  "create-user.proto";
+
+option go_package ="github.com/obasootom/gochatapp/pb";
+message CreateUserRequest {
+    string username  = 1;
+    string fullName = 2;
+    string email = 3;
+    string password = 4;
+}
+
+message CreateUserResponse {
+    UserChat user = 1;
+}

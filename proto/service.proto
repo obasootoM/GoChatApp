@@ -4,6 +4,7 @@ package pb;
 import "connect.proto";
 import "message.proto";
 import "close.proto";
+
 option go_package = "github.com/obasootom/gochatapp/pb";
 
 
@@ -11,3 +12,4 @@ service Broadcast {
     rpc CreateStream(Connect) returns (stream Message);
     rpc BroadcastMessage(Message) returns (Close);
 }
+

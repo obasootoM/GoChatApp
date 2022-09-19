@@ -9,5 +9,9 @@ path:
 	
 main:
 	go run main.go
+
+minikube:
+	eval $(minikube docker-env)
+	
 	
 .PHONY: proto main
