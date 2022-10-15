@@ -12,6 +12,23 @@ main:
 
 minikube:
 	eval $(minikube docker-env)
+
+migrate:
+	migrate create -ext sql -dir db/migration -seq init-schema
 	
-	
-.PHONY: proto main
+sqlc:
+	sqlc generate
+
+createdb:
+	docker exec -it postgresline createdb --username=root --owner=root gochatapp
+
+migrateup:
+	migrate -path db/migration -database "postgresql://root:postgres@localhost:8000/gochatapp?sslmode=disable" -verbose up
+
+migratedown:
+	migrate -path db/migration -database "postgresql://root:postgres@localhost:8000/gochatapp?sslmode=disable" -verbose down
+
+dropdb:
+	docker exec -it postgresline dropdb gochatapp
+
+.PHONY: proto main migrate sqlc createdb dropdb migrateup migratedown

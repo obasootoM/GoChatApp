@@ -90,7 +90,7 @@ func main() {
 				Content:   scanner.Text(),
 				Timestamp: timestamp.String(),
 			}
-
+            
 			_, err := client.BroadcastMessage(context.Background(),msg)
 			if err != nil {
 				fmt.Printf("Error Sending Message: %v", err)
