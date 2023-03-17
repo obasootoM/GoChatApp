@@ -8,7 +8,7 @@ type Config struct {
 	GRPC_ADDRESS string `mapstructure:"db_address"`
 }
 
-func NewConfigure(path string) (config *Config, err error) {
+func NewConfigure(path string) (config Config, err error) {
 	viper.AddConfigPath(path)
 	viper.SetConfigName("app")
 	viper.SetConfigType("env")

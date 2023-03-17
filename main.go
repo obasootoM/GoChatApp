@@ -61,7 +61,7 @@ func (s *Server) BroadcastMessage(ctx context.Context, msg *pb.Message) (*pb.Clo
 	}
 	post, err := s.store.CreatePost(ctx, arg)
 	if err != nil {
-		fmt.Printf("cannot create user %s", err)
+		fmt.Printf("cannot send message %s", err)
 	}
 	for _, conn := range s.Connection {
 		wait.Add(1)
